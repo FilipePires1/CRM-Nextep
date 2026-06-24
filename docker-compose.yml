@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  nextep-crm:
+    build: ./backend
+    container_name: nextep-crm-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - nextep-network
+
+  # Evolution API (separado ou externo)
+  # evolution-api:
+  #   image: atendai/evolution-api:v2.4.0
+  #   container_name: evolution-api
+  #   restart: unless-stopped
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - SERVER_URL=http://localhost:8080
+  #     - AUTHENTICATION_API_KEY=sua-chave
+  #   networks:
+  #     - nextep-network
+
+networks:
+  nextep-network:
+    driver: bridge

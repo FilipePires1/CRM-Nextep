@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nextep CRM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="assets/css/nextep.css">
+</head>
+<body>
+  <div class="nx-toast-container" id="toast-container"></div>
+
+  <!-- ═══ AUTH ═══ -->
+  <div id="auth-screen" class="nx-auth-bg">
+    <div id="login-panel" class="nx-auth-card">
+      <div class="nx-auth-logo">
+        <div class="nx-brand-icon">N</div>
+        <h1>Nextep <span>CRM</span></h1>
+        <p>Sistema Imobiliário Profissional</p>
+      </div>
+      <form id="login-form">
+        <div class="nx-form-group">
+          <label class="nx-form-label">E-mail</label>
+          <input type="email" class="nx-input" id="login-email" placeholder="seu@email.com" required>
+        </div>
+        <div class="nx-form-group">
+          <label class="nx-form-label">Senha</label>
+          <input type="password" class="nx-input" id="login-password" placeholder="••••••••" required>
+        </div>
+        <div class="d-flex" style="justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <label class="d-flex gap-2" style="align-items:center;font-size:0.8rem;color:var(--nx-text-secondary);cursor:pointer;">
+            <input type="checkbox" id="remember-me" style="accent-color:var(--nx-primary);">
+            Lembrar-me
+          </label>
+          <a href="#" id="forgot-link" style="font-size:0.8rem;color:var(--nx-primary);text-decoration:none;font-weight:500;">Esqueceu a senha?</a>
+        </div>
+        <button type="submit" class="nx-btn nx-btn-primary w-100" id="login-btn" style="padding:10px 16px;">
+          <i class="bi bi-box-arrow-in-right"></i> Entrar
+        </button>
+      </form>
+      <div class="nx-auth-divider">ou</div>
+      <button class="nx-btn nx-btn-secondary w-100" id="show-register">
+        <i class="bi bi-building-add"></i> Criar minha imobiliária
+      </button>
+    </div>
+
+    <div id="register-panel" class="nx-auth-card d-none" style="max-width:520px;">
+      <div class="nx-auth-logo">
+        <div class="nx-brand-icon">N</div>
+        <h1>Criar Conta</h1>
+        <p>Comece a gerenciar seus imóveis hoje</p>
+      </div>
+      <form id="register-form">
+        <h4 style="font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;color:var(--nx-text-muted);margin-bottom:12px;">Dados da Empresa</h4>
+        <div class="d-flex gap-3" style="margin-bottom:12px;">
+          <div class="nx-form-group flex-1"><label class="nx-form-label">Nome da Imobiliária <span class="required">*</span></label><input type="text" class="nx-input" id="reg-company-name" required></div>
+          <div class="nx-form-group flex-1"><label class="nx-form-label">E-mail da Empresa <span class="required">*</span></label><input type="email" class="nx-input" id="reg-company-email" required></div>
+        </div>
+        <div class="nx-form-group" style="margin-bottom:20px;"><label class="nx-form-label">Telefone</label><input type="tel" class="nx-input" id="reg-company-phone" placeholder="(00) 00000-0000"></div>
+        <h4 style="font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;color:var(--nx-text-muted);margin-bottom:12px;">Dados do Administrador</h4>
+        <div class="d-flex gap-3" style="margin-bottom:12px;">
+          <div class="nx-form-group flex-1"><label class="nx-form-label">Seu Nome <span class="required">*</span></label><input type="text" class="nx-input" id="reg-admin-name" required></div>
+          <div class="nx-form-group flex-1"><label class="nx-form-label">Seu E-mail <span class="required">*</span></label><input type="email" class="nx-input" id="reg-admin-email" required></div>
+        </div>
+        <div class="nx-form-group" style="margin-bottom:20px;"><label class="nx-form-label">Senha <span class="required">*</span></label><input type="password" class="nx-input" id="reg-admin-password" minlength="8" required><div style="font-size:0.75rem;color:var(--nx-text-muted);margin-top:4px;">Mínimo 8 caracteres</div></div>
+        <h4 style="font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;color:var(--nx-text-muted);margin-bottom:12px;">Plano</h4>
+        <div class="d-flex gap-3" style="margin-bottom:24px;">
+          <label class="nx-plan-option flex-1" style="cursor:pointer;"><input type="radio" name="plan" value="basic" checked style="display:none;"><div class="nx-plan-card" id="plan-basic"><div class="nx-plan-name">Básico</div><div class="nx-plan-price">R$ 97<span>/mês</span></div><ul class="nx-plan-features"><li><i class="bi bi-check-lg"></i> 2 usuários</li><li><i class="bi bi-check-lg"></i> 1 WhatsApp</li><li><i class="bi bi-check-lg"></i> 500 leads</li></ul></div></label>
+          <label class="nx-plan-option flex-1" style="cursor:pointer;"><input type="radio" name="plan" value="professional" style="display:none;"><div class="nx-plan-card" id="plan-professional"><div class="nx-plan-name">Profissional</div><div class="nx-plan-price">R$ 297<span>/mês</span></div><ul class="nx-plan-features"><li><i class="bi bi-check-lg"></i> 10 usuários</li><li><i class="bi bi-check-lg"></i> 3 WhatsApps</li><li><i class="bi bi-check-lg"></i> Leads ilimitados</li></ul></div></label>
+          <label class="nx-plan-option flex-1" style="cursor:pointer;"><input type="radio" name="plan" value="enterprise" style="display:none;"><div class="nx-plan-card" id="plan-enterprise"><div class="nx-plan-name">Enterprise</div><div class="nx-plan-price">R$ 997<span>/mês</span></div><ul class="nx-plan-features"><li><i class="bi bi-check-lg"></i> Ilimitado</li><li><i class="bi bi-check-lg"></i> API liberada</li><li><i class="bi bi-check-lg"></i> Suporte VIP</li></ul></div></label>
+        </div>
+        <button type="submit" class="nx-btn nx-btn-primary w-100" id="register-btn" style="padding:10px 16px;"><i class="bi bi-check-circle"></i> Criar Conta</button>
+      </form>
+      <div style="text-align:center;margin-top:16px;"><a href="#" id="show-login" style="font-size:0.875rem;color:var(--nx-primary);text-decoration:none;font-weight:500;">Já tem conta? Entrar</a></div>
+    </div>
+  </div>
+
+  <!-- ═══ MAIN APP ═══ -->
+  <div id="app-layout" class="app-layout d-none">
+    <aside class="nx-sidebar" id="sidebar">
+      <div class="nx-sidebar-header">
+        <div class="nx-brand-icon">N</div>
+        <div class="nx-brand-text"><span class="nx-brand-name">Nextep</span><span class="nx-brand-sub">CRM Imobiliário</span></div>
+      </div>
+      <div class="nx-sidebar-user" id="sidebar-user">
+        <div class="nx-user-avatar" id="user-avatar-initial">U</div>
+        <div class="nx-user-info"><span class="nx-user-name" id="sidebar-user-name">Usuário</span><span class="nx-user-role" id="sidebar-user-role">Corretor</span></div>
+      </div>
+      <ul class="nx-nav" id="main-nav">
+        <li class="nx-nav-section">Principal</li>
+        <li class="nx-nav-item"><button class="nx-nav-link active" data-page="dashboard"><i class="bi bi-speedometer2 nx-nav-icon"></i><span>Dashboard</span></button></li>
+        <li class="nx-nav-item"><button class="nx-nav-link" data-page="pipeline"><i class="bi bi-kanban nx-nav-icon"></i><span>Funil de Vendas</span></button></li>
+        <li class="nx-nav-item"><button class="nx-nav-link" data-page="leads"><i class="bi bi-people nx-nav-icon"></i><span>Leads</span><span class="nx-nav-badge" id="nav-leads-count">0</span></button></li>
+        <li class="nx-nav-item"><button class="nx-nav-link" data-page="clients"><i class="bi bi-person-check nx-nav-icon"></i><span>Clientes</span></button></li>
+        <li class="nx-nav-item"><button class="nx-nav-link" data-page="properties"><i class="bi bi-house-door nx-nav-icon"></i><span>Imóveis</span></button></li>
+        <li class="nx-nav-section">Operações</li>
+        <li class="nx-nav-item"><button class="nx-nav-link" data-page="calendar"><i class="bi bi-calendar3 nx-nav-icon"></i><span>Agenda</span></button></li>
+        <li class="nx-nav-item"><button class="nx-nav-link" data-page="tasks"><i class="bi bi-check2-square nx-nav-icon"></i><span>Tarefas</span><span class="nx-nav-badge warning" id="nav-tasks-count">0</span></button></li>
+        <li class="nx-nav-item"><button class="nx-nav-link" data-page="whatsapp"><i class="bi bi-whatsapp nx-nav-icon"></i><span>WhatsApp</span></button></li>
+        <li class="nx-nav-section">Avançado</li>
+        <li class="nx-nav-item"><button class="nx-nav-link" data-page="automations"><i class="bi bi-magic nx-nav-icon"></i><span>Automações</span></button></li>
+        <li class="nx-nav-item"><button class="nx-nav-link" data-page="reports"><i class="bi bi-graph-up nx-nav-icon"></i><span>Relatórios</span></button></li>
+        <li class="nx-nav-item admin-only d-none"><button class="nx-nav-link" data-page="admin"><i class="bi bi-shield-lock nx-nav-icon"></i><span>Super Admin</span></button></li>
+        <li class="nx-nav-item"><button class="nx-nav-link" data-page="settings"><i class="bi bi-gear nx-nav-icon"></i><span>Configurações</span></button></li>
+      </ul>
+      <div class="nx-sidebar-footer">
+        <button class="nx-btn-ghost" id="theme-toggle"><i class="bi bi-moon-stars"></i><span id="theme-label">Modo Escuro</span></button>
+        <button class="nx-btn-ghost" id="logout-btn" style="margin-top:4px;color:var(--nx-slate-500);"><i class="bi bi-box-arrow-right"></i><span>Sair</span></button>
+      </div>
+    </aside>
+
+    <div id="sidebar-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:99;display:none;"></div>
+
+    <main class="nx-main">
+      <header class="nx-topbar">
+        <div class="nx-topbar-left">
+          <button class="nx-menu-toggle" id="menu-toggle"><i class="bi bi-list"></i></button>
+          <div class="nx-search"><i class="bi bi-search"></i><input type="text" placeholder="Buscar leads, clientes, imóveis..." id="global-search"></div>
+        </div>
+        <div class="nx-topbar-right">
+          <button class="nx-btn-icon" id="notifications-btn"><i class="bi bi-bell"></i><span class="nx-dot d-none" id="notif-dot"></span></button>
+          <button class="nx-user-menu" id="user-menu-btn">
+            <div class="nx-avatar-sm" id="topbar-avatar">U</div>
+            <span id="topbar-name" style="font-size:0.85rem;font-weight:500;">Usuário</span>
+            <i class="bi bi-chevron-down" style="font-size:0.7rem;color:var(--nx-text-muted);"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- ═══ DASHBOARD ═══ -->
+      <div class="nx-page active" id="page-dashboard">
+        <div class="nx-page-header"><h1>Dashboard</h1><p class="text-secondary">Visão geral do seu negócio</p></div>
+        <div class="nx-stat-grid" id="dashboard-stats">
+          <div class="nx-stat-card"><div class="nx-stat-icon green"><i class="bi bi-people"></i></div><div class="nx-stat-info"><div class="nx-stat-value" id="stat-leads">0</div><div class="nx-stat-label">Total de Leads</div><div class="nx-stat-change up"><i class="bi bi-arrow-up-short"></i> <span id="stat-leads-change">0%</span></div></div></div>
+          <div class="nx-stat-card"><div class="nx-stat-icon blue"><i class="bi bi-person-check"></i></div><div class="nx-stat-info"><div class="nx-stat-value" id="stat-clients">0</div><div class="nx-stat-label">Clientes</div><div class="nx-stat-change up"><i class="bi bi-arrow-up-short"></i> <span id="stat-clients-change">0</span> este mês</div></div></div>
+          <div class="nx-stat-card"><div class="nx-stat-icon green"><i class="bi bi-house-door"></i></div><div class="nx-stat-info"><div class="nx-stat-value" id="stat-properties">0</div><div class="nx-stat-label">Imóveis</div></div></div>
+          <div class="nx-stat-card"><div class="nx-stat-icon amber"><i class="bi bi-currency-dollar"></i></div><div class="nx-stat-info"><div class="nx-stat-value" id="stat-sales">R$ 0</div><div class="nx-stat-label">Vendas</div><div class="nx-stat-change up" id="stat-conversion"><i class="bi bi-arrow-up-short"></i> 0% conversão</div></div></div>
+        </div>
+        <div class="d-flex gap-4" style="margin-bottom:24px;">
+          <div class="nx-card flex-1"><div class="nx-card-header"><h3>Leads por Mês</h3><select class="nx-select nx-select-sm" id="chart-period" style="width:auto;padding:4px 28px 4px 10px;font-size:0.8rem;"><option value="6months">Últimos 6 meses</option><option value="30days">Últimos 30 dias</option><option value="1year">Último ano</option></select></div><div class="nx-card-body"><canvas id="leads-chart" height="280"></canvas></div></div>
+          <div class="nx-card" style="width:340px;flex-shrink:0;"><div class="nx-card-header"><h3>Origem dos Leads</h3></div><div class="nx-card-body" style="display:flex;align-items:center;justify-content:center;"><canvas id="source-chart" height="240"></canvas></div></div>
+        </div>
+        <div class="d-flex gap-4">
+          <div class="nx-card flex-1"><div class="nx-card-header" style="justify-content:space-between;"><h3>Tarefas de Hoje</h3><button class="nx-btn nx-btn-ghost-light nx-btn-sm" onclick="showPage('tasks');loadTasks()">Ver todas</button></div><div class="nx-card-body p-0" id="today-tasks"><div style="padding:32px;text-align:center;color:var(--nx-text-muted);"><i class="bi bi-check2-all" style="font-size:2rem;display:block;margin-bottom:8px;opacity:0.4;"></i>Nenhuma tarefa para hoje</div></div></div>
+          <div class="nx-card flex-1"><div class="nx-card-header" style="justify-content:space-between;"><h3>Agenda de Hoje</h3><button class="nx-btn nx-btn-ghost-light nx-btn-sm" onclick="showPage('calendar');loadCalendar()">Ver agenda</button></div><div class="nx-card-body p-0" id="today-events"><div style="padding:32px;text-align:center;color:var(--nx-text-muted);"><i class="bi bi-calendar-x" style="font-size:2rem;display:block;margin-bottom:8px;opacity:0.4;"></i>Nenhum evento para hoje</div></div></div>
+        </div>
+      </div>
+
+      <!-- ═══ PIPELINE ═══ -->
+      <div class="nx-page" id="page-pipeline">
+        <div class="nx-page-header" style="display:flex;justify-content:space-between;align-items:flex-end;">
+          <div><h1>Funil de Vendas</h1><p class="text-secondary">Arraste os leads entre as etapas</p></div>
+          <button class="nx-btn nx-btn-primary" id="btn-new-lead"><i class="bi bi-plus-lg"></i> Novo Lead</button>
+        </div>
+        <div style="display:flex;gap:12px;margin-bottom:16px;">
+          <div class="nx-search" style="width:280px;"><i class="bi bi-search"></i><input type="text" placeholder="Buscar no funil..." id="pipeline-search"></div>
+          <select class="nx-select" id="pipeline-filter-assigned" style="width:180px;"><option value="">Todos os responsáveis</option></select>
+          <button class="nx-btn nx-btn-ghost-light" id="pipeline-refresh"><i class="bi bi-arrow-clockwise"></i></button>
+        </div>
+        <div class="nx-kanban" id="kanban-board"></div>
+      </div>
+
+      <!-- ═══ LEADS ═══ -->
+      <div class="nx-page" id="page-leads">
+        <div class="nx-page-header" style="display:flex;justify-content:space-between;align-items:flex-end;">
+          <div><h1>Leads</h1><p class="text-secondary">Gerencie todos os seus leads</p></div>
+          <button class="nx-btn nx-btn-primary" id="btn-new-lead-2"><i class="bi bi-plus-lg"></i> Novo Lead</button>
+        </div>
+        <div class="nx-card"><div class="nx-card-body p-0">
+          <div class="nx-table-wrap"><table class="nx-table" id="leads-table"><thead><tr><th>Nome</th><th>Contato</th><th>Interesse</th><th>Origem</th><th>Responsável</th><th>Status</th><th>Prioridade</th><th style="width:100px;">Ações</th></tr></thead><tbody></tbody></table></div>
+          <div class="nx-pagination" id="leads-pagination"></div>
+        </div></div>
+      </div>
+
+      <!-- ═══ CLIENTS ═══ -->
+      <div class="nx-page" id="page-clients">
+        <div class="nx-page-header" style="display:flex;justify-content:space-between;align-items:flex-end;">
+          <div><h1>Clientes</h1><p class="text-secondary">Base de clientes convertidos</p></div>
+          <button class="nx-btn nx-btn-primary" id="btn-new-client"><i class="bi bi-plus-lg"></i> Novo Cliente</button>
+        </div>
+        <div class="nx-card"><div class="nx-card-body p-0">
+          <div class="nx-table-wrap"><table class="nx-table" id="clients-table"><thead><tr><th>Nome</th><th>Contato</th><th>CPF</th><th>Cidade</th><th>Responsável</th><th>Status</th><th style="width:100px;">Ações</th></tr></thead><tbody></tbody></table></div>
+          <div class="nx-pagination" id="clients-pagination"></div>
+        </div></div>
+      </div>
+
+      <!-- ═══ PROPERTIES ═══ -->
+      <div class="nx-page" id="page-properties">
+        <div class="nx-page-header" style="display:flex;justify-content:space-between;align-items:flex-end;">
+          <div><h1>Imóveis</h1><p class="text-secondary">Catálogo completo de imóveis</p></div>
+          <button class="nx-btn nx-btn-primary" id="btn-new-property"><i class="bi bi-plus-lg"></i> Novo Imóvel</button>
+        </div>
+        <div style="display:flex;gap:10px;margin-bottom:20px;">
+          <select class="nx-select" id="prop-filter-type" style="width:160px;"><option value="">Todos os tipos</option><option value="house">Casa</option><option value="apartment">Apartamento</option><option value="commercial">Comercial</option><option value="land">Terreno</option><option value="warehouse">Galpão</option></select>
+          <input type="text" class="nx-input" id="prop-filter-city" placeholder="Cidade" style="width:180px;">
+          <input type="number" class="nx-input" id="prop-filter-min" placeholder="Preço mín" style="width:140px;">
+          <input type="number" class="nx-input" id="prop-filter-max" placeholder="Preço máx" style="width:140px;">
+          <button class="nx-btn nx-btn-secondary" id="prop-filter-btn"><i class="bi bi-funnel"></i> Filtrar</button>
+        </div>
+        <div class="nx-property-grid" id="properties-grid"></div>
+        <div class="nx-pagination" id="properties-pagination"></div>
+      </div>
+
+      <!-- ═══ CALENDAR ═══ -->
+      <div class="nx-page" id="page-calendar">
+        <div class="nx-page-header" style="display:flex;justify-content:space-between;align-items:flex-end;">
+          <div><h1>Agenda</h1><p class="text-secondary">Compromissos e visitas</p></div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <button class="nx-btn nx-btn-ghost-light" id="calendar-prev"><i class="bi bi-chevron-left"></i></button>
+            <span id="calendar-month-title" style="font-weight:600;font-size:0.95rem;min-width:160px;text-align:center;"></span>
+            <button class="nx-btn nx-btn-ghost-light" id="calendar-next"><i class="bi bi-chevron-right"></i></button>
+            <button class="nx-btn nx-btn-ghost-light" id="calendar-today">Hoje</button>
+            <button class="nx-btn nx-btn-primary" id="btn-new-event"><i class="bi bi-plus-lg"></i> Novo Evento</button>
+          </div>
+        </div>
+        <div class="nx-card">
+          <div class="nx-card-body" style="padding:12px;">
+            <div id="calendar-grid"></div>
+          </div>
+        </div>
+        <!-- Google Calendar opcional -->
+        <div class="nx-card" style="margin-top:16px;">
+          <div class="nx-card-body" style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:36px;height:36px;background:#4285F4;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:0.8rem;">G</div>
+              <div><div style="font-weight:600;font-size:0.875rem;">Google Calendar</div><div style="font-size:0.75rem;color:var(--nx-text-muted);">Opcional — sincronize seus eventos com o Google Calendar</div></div>
+            </div>
+            <button class="nx-btn nx-btn-secondary nx-btn-sm" id="btn-connect-google"><i class="bi bi-plug"></i> Conectar (opcional)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ TASKS ═══ -->
+      <div class="nx-page" id="page-tasks">
+        <div class="nx-page-header" style="display:flex;justify-content:space-between;align-items:flex-end;">
+          <div><h1>Tarefas</h1><p class="text-secondary">Acompanhamento de atividades</p></div>
+          <button class="nx-btn nx-btn-primary" id="btn-new-task"><i class="bi bi-plus-lg"></i> Nova Tarefa</button>
+        </div>
+        <div class="nx-card"><div class="nx-card-body p-0">
+          <div class="nx-table-wrap"><table class="nx-table" id="tasks-table"><thead><tr><th>Tarefa</th><th>Tipo</th><th>Prioridade</th><th>Status</th><th>Responsável</th><th>Prazo</th><th style="width:100px;">Ações</th></tr></thead><tbody></tbody></table></div>
+          <div class="nx-pagination" id="tasks-pagination"></div>
+        </div></div>
+      </div>
+
+      <!-- ═══ WHATSAPP ═══ -->
+      <div class="nx-page" id="page-whatsapp">
+        <div class="nx-page-header"><h1>WhatsApp</h1><p class="text-secondary">Conversas e instâncias conectadas</p></div>
+        <div class="d-flex gap-4">
+          <div class="nx-card" style="width:320px;flex-shrink:0;">
+            <div class="nx-card-header" style="justify-content:space-between;"><h3>Instâncias</h3><button class="nx-btn nx-btn-primary nx-btn-sm" id="btn-add-wa"><i class="bi bi-plus-lg"></i></button></div>
+            <div class="nx-card-body p-0" id="wa-instances"><div style="padding:24px;text-align:center;color:var(--nx-text-muted);"><i class="bi bi-whatsapp" style="font-size:2rem;display:block;margin-bottom:8px;opacity:0.3;"></i>Nenhuma instância conectada</div></div>
+          </div>
+          <div class="nx-chat flex-1">
+            <div class="nx-chat-header"><div class="nx-avatar-sm" style="width:36px;height:36px;font-size:0.85rem;">?</div><div><div style="font-weight:600;font-size:0.9rem;">Selecione uma conversa</div><div style="font-size:0.75rem;color:var(--nx-text-muted);">--</div></div></div>
+            <div class="nx-chat-messages" id="chat-messages"><div style="text-align:center;color:var(--nx-text-muted);padding:40px;"><i class="bi bi-chat-square-text" style="font-size:3rem;display:block;margin-bottom:12px;opacity:0.2;"></i>Selecione uma conversa para começar</div></div>
+            <div class="nx-chat-input"><button class="nx-btn-icon"><i class="bi bi-paperclip"></i></button><input type="text" placeholder="Digite uma mensagem..." id="chat-input"><button class="nx-btn nx-btn-primary nx-btn-sm" id="chat-send"><i class="bi bi-send"></i></button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ AUTOMATIONS ═══ -->
+      <div class="nx-page" id="page-automations">
+        <div class="nx-page-header" style="display:flex;justify-content:space-between;align-items:flex-end;">
+          <div><h1>Automações</h1><p class="text-secondary">Fluxos automáticos de trabalho</p></div>
+          <button class="nx-btn nx-btn-primary" id="btn-new-automation"><i class="bi bi-plus-lg"></i> Nova Automação</button>
+        </div>
+        <!-- Templates de automação -->
+        <div class="nx-stat-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px;">
+          <div class="nx-stat-card" style="cursor:pointer;" onclick="createAutomation('followup')"><div class="nx-stat-icon blue"><i class="bi bi-reply"></i></div><div class="nx-stat-info"><div class="nx-stat-value" style="font-size:1rem;">Follow-up Automático</div><div class="nx-stat-label">Mensagem após X dias sem contato</div></div></div>
+          <div class="nx-stat-card" style="cursor:pointer;" onclick="createAutomation('birthday')"><div class="nx-stat-icon amber"><i class="bi bi-gift"></i></div><div class="nx-stat-info"><div class="nx-stat-value" style="font-size:1rem;">Aniversário do Lead</div><div class="nx-stat-label">Mensagem automática no aniversário</div></div></div>
+          <div class="nx-stat-card" style="cursor:pointer;" onclick="createAutomation('stage')"><div class="nx-stat-icon green"><i class="bi bi-kanban"></i></div><div class="nx-stat-info"><div class="nx-stat-value" style="font-size:1rem;">Mudança de Etapa</div><div class="nx-stat-label">Ação ao mover lead no funil</div></div></div>
+        </div>
+        <div class="nx-card">
+          <div class="nx-card-header"><h3>Automações Ativas</h3></div>
+          <div class="nx-card-body p-0" id="automations-list">
+            <div style="padding:48px;text-align:center;color:var(--nx-text-muted);">
+              <i class="bi bi-magic" style="font-size:3rem;display:block;margin-bottom:16px;opacity:0.3;"></i>
+              <h3 style="margin-bottom:8px;">Nenhuma automação ativa</h3>
+              <p>Clique em um template acima ou em "Nova Automação" para começar</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ REPORTS ═══ -->
+      <div class="nx-page" id="page-reports">
+        <div class="nx-page-header" style="display:flex;justify-content:space-between;align-items:flex-end;">
+          <div><h1>Relatórios</h1><p class="text-secondary">Análise e exportação de dados</p></div>
+          <div style="display:flex;gap:8px;">
+            <input type="date" class="nx-input" id="report-start" style="width:150px;">
+            <input type="date" class="nx-input" id="report-end" style="width:150px;">
+            <button class="nx-btn nx-btn-secondary" id="btn-run-report"><i class="bi bi-play"></i> Gerar</button>
+            <button class="nx-btn nx-btn-ghost-light" id="btn-export-csv"><i class="bi bi-filetype-csv"></i> CSV</button>
+          </div>
+        </div>
+        <!-- KPIs -->
+        <div class="nx-stat-grid" style="margin-bottom:24px;">
+          <div class="nx-stat-card"><div class="nx-stat-icon green"><i class="bi bi-people"></i></div><div class="nx-stat-info"><div class="nx-stat-value" id="rep-total-leads">0</div><div class="nx-stat-label">Total de Leads</div></div></div>
+          <div class="nx-stat-card"><div class="nx-stat-icon blue"><i class="bi bi-person-check"></i></div><div class="nx-stat-info"><div class="nx-stat-value" id="rep-converted">0</div><div class="nx-stat-label">Convertidos</div></div></div>
+          <div class="nx-stat-card"><div class="nx-stat-icon red"><i class="bi bi-x-circle"></i></div><div class="nx-stat-info"><div class="nx-stat-value" id="rep-lost">0</div><div class="nx-stat-label">Perdidos</div></div></div>
+          <div class="nx-stat-card"><div class="nx-stat-icon amber"><i class="bi bi-percent"></i></div><div class="nx-stat-info"><div class="nx-stat-value" id="rep-rate">0%</div><div class="nx-stat-label">Taxa de Conversão</div></div></div>
+        </div>
+        <!-- Tabela de resultados -->
+        <div class="nx-card">
+          <div class="nx-card-header"><h3>Detalhamento por Origem</h3></div>
+          <div class="nx-card-body p-0">
+            <div class="nx-table-wrap"><table class="nx-table" id="report-table"><thead><tr><th>Origem</th><th>Leads</th><th>Convertidos</th><th>Perdidos</th><th>Conversão</th><th>Volume (R$)</th></tr></thead><tbody><tr><td colspan="6" style="text-align:center;color:var(--nx-text-muted);padding:32px;">Selecione o período e clique em Gerar</td></tr></tbody></table></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ ADMIN ═══ -->
+      <div class="nx-page" id="page-admin">
+        <div class="nx-page-header"><h1><i class="bi bi-shield-lock" style="margin-right:8px;"></i>Super Admin</h1><p class="text-secondary">Gerenciamento global do sistema</p></div>
+        <div class="nx-stat-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
+          <div class="nx-stat-card"><div class="nx-stat-icon green"><i class="bi bi-buildings"></i></div><div class="nx-stat-info"><div class="nx-stat-value" id="admin-total-companies">0</div><div class="nx-stat-label">Total de Empresas</div></div></div>
+          <div class="nx-stat-card"><div class="nx-stat-icon blue"><i class="bi bi-check-circle"></i></div><div class="nx-stat-info"><div class="nx-stat-value" id="admin-active-companies">0</div><div class="nx-stat-label">Empresas Ativas</div></div></div>
+          <div class="nx-stat-card"><div class="nx-stat-icon amber"><i class="bi bi-currency-dollar"></i></div><div class="nx-stat-info"><div class="nx-stat-value" id="admin-revenue">R$ 0</div><div class="nx-stat-label">Receita Mensal</div></div></div>
+          <div class="nx-stat-card"><div class="nx-stat-icon green"><i class="bi bi-people"></i></div><div class="nx-stat-info"><div class="nx-stat-value" id="admin-total-users">0</div><div class="nx-stat-label">Usuários Totais</div></div></div>
+        </div>
+        <div class="nx-card">
+          <div class="nx-card-header" style="justify-content:space-between;"><h3>Todas as Empresas</h3><input type="text" class="nx-input" id="admin-search" placeholder="Buscar empresa..." style="width:220px;padding:6px 12px;font-size:0.8rem;"></div>
+          <div class="nx-card-body p-0">
+            <div class="nx-table-wrap"><table class="nx-table" id="admin-companies-table">
+              <thead><tr><th>Empresa</th><th>Plano</th><th>Status</th><th>Usuários</th><th>Leads</th><th>Criada em</th><th>Ações</th></tr></thead>
+              <tbody></tbody>
+            </table></div>
+            <div class="nx-pagination" id="admin-pagination"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ SETTINGS ═══ -->
+      <div class="nx-page" id="page-settings">
+        <div class="nx-page-header"><h1>Configurações</h1><p class="text-secondary">Personalize sua experiência</p></div>
+        <div class="d-flex gap-4">
+          <div class="nx-card" style="width:240px;flex-shrink:0;"><div class="nx-card-body p-0"><div class="nx-settings-nav">
+            <button class="nx-settings-link active" data-tab="company"><i class="bi bi-building"></i> Empresa</button>
+            <button class="nx-settings-link" data-tab="users"><i class="bi bi-people"></i> Usuários</button>
+            <button class="nx-settings-link" data-tab="integrations"><i class="bi bi-plug"></i> Integrações</button>
+            <button class="nx-settings-link" data-tab="billing"><i class="bi bi-credit-card"></i> Assinatura</button>
+            <button class="nx-settings-link" data-tab="appearance"><i class="bi bi-palette"></i> Aparência</button>
+          </div></div></div>
+          <div class="nx-card flex-1"><div class="nx-card-body" id="settings-content">
+
+            <!-- Tab: Empresa -->
+            <div id="tab-company" class="nx-settings-tab active">
+              <h3 style="margin-bottom:20px;">Dados da Empresa</h3>
+              <form id="company-form">
+                <div class="d-flex gap-3" style="margin-bottom:16px;">
+                  <div class="nx-form-group flex-1"><label class="nx-form-label">Nome da Empresa</label><input type="text" class="nx-input" id="set-company-name"></div>
+                  <div class="nx-form-group flex-1"><label class="nx-form-label">E-mail</label><input type="email" class="nx-input" id="set-company-email"></div>
+                </div>
+                <div class="d-flex gap-3" style="margin-bottom:16px;">
+                  <div class="nx-form-group flex-1"><label class="nx-form-label">Telefone</label><input type="tel" class="nx-input" id="set-company-phone"></div>
+                  <div class="nx-form-group flex-1"><label class="nx-form-label">Website</label><input type="url" class="nx-input" id="set-company-domain" placeholder="https://"></div>
+                </div>
+                <div class="nx-form-group" style="margin-bottom:24px;"><label class="nx-form-label">Logo</label><input type="file" class="nx-input" id="set-company-logo" accept="image/*"></div>
+                <button type="submit" class="nx-btn nx-btn-primary">Salvar Alterações</button>
+              </form>
+            </div>
+
+            <!-- Tab: Usuários -->
+            <div id="tab-users" class="nx-settings-tab">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                <h3>Usuários da Empresa</h3>
+                <button class="nx-btn nx-btn-primary nx-btn-sm" id="btn-invite-user"><i class="bi bi-person-plus"></i> Convidar Usuário</button>
+              </div>
+              <div id="users-list"><div style="padding:32px;text-align:center;color:var(--nx-text-muted);"><i class="bi bi-people" style="font-size:2rem;display:block;margin-bottom:8px;opacity:0.3;"></i>Carregando usuários...</div></div>
+            </div>
+
+            <!-- Tab: Integrações -->
+            <div id="tab-integrations" class="nx-settings-tab">
+              <h3 style="margin-bottom:20px;">Integrações</h3>
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                <div style="border:1px solid var(--nx-border);border-radius:var(--nx-radius);padding:16px;display:flex;align-items:center;justify-content:space-between;">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <div style="width:40px;height:40px;background:#4285F4;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">G</div>
+                    <div><div style="font-weight:600;">Google Calendar</div><div style="font-size:0.8rem;color:var(--nx-text-muted);">Sincronize eventos com o Google Calendar (opcional)</div></div>
+                  </div>
+                  <button class="nx-btn nx-btn-secondary nx-btn-sm" id="btn-google-calendar-settings"><i class="bi bi-plug"></i> Configurar</button>
+                </div>
+                <div style="border:1px solid var(--nx-border);border-radius:var(--nx-radius);padding:16px;display:flex;align-items:center;justify-content:space-between;">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <div style="width:40px;height:40px;background:#25D366;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;"><i class="bi bi-whatsapp"></i></div>
+                    <div><div style="font-weight:600;">WhatsApp (Evolution API)</div><div style="font-size:0.8rem;color:var(--nx-text-muted);">Gerencie instâncias na aba WhatsApp</div></div>
+                  </div>
+                  <button class="nx-btn nx-btn-ghost-light nx-btn-sm" onclick="showPage('whatsapp');loadWhatsApp()">Gerenciar</button>
+                </div>
+                <div style="border:1px solid var(--nx-border);border-radius:var(--nx-radius);padding:16px;display:flex;align-items:center;justify-content:space-between;">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <div style="width:40px;height:40px;background:#635BFF;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:0.8rem;">S</div>
+                    <div><div style="font-weight:600;">Stripe</div><div style="font-size:0.8rem;color:var(--nx-text-muted);">Pagamentos e assinaturas</div></div>
+                  </div>
+                  <span class="nx-badge nx-badge-gray">Via .env</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab: Assinatura -->
+            <div id="tab-billing" class="nx-settings-tab">
+              <h3 style="margin-bottom:20px;">Assinatura</h3>
+              <div id="billing-info"><div style="padding:32px;text-align:center;color:var(--nx-text-muted);"><i class="bi bi-credit-card" style="font-size:2rem;display:block;margin-bottom:8px;opacity:0.3;"></i>Carregando informações...</div></div>
+            </div>
+
+            <!-- Tab: Aparência -->
+            <div id="tab-appearance" class="nx-settings-tab">
+              <h3 style="margin-bottom:20px;">Aparência</h3>
+              <div class="d-flex gap-3" style="margin-bottom:16px;">
+                <div class="nx-form-group flex-1"><label class="nx-form-label">Cor Primária</label><input type="color" class="nx-input" id="set-primary-color" value="#16a34a" style="height:40px;padding:4px;"></div>
+                <div class="nx-form-group flex-1"><label class="nx-form-label">Cor Secundária</label><input type="color" class="nx-input" id="set-secondary-color" value="#15803d" style="height:40px;padding:4px;"></div>
+              </div>
+              <div class="nx-form-group" style="margin-bottom:24px;">
+                <label class="nx-form-label">Tema</label>
+                <div style="display:flex;gap:12px;margin-top:8px;">
+                  <button class="nx-btn nx-btn-secondary" onclick="setTheme('light')"><i class="bi bi-sun"></i> Claro</button>
+                  <button class="nx-btn nx-btn-secondary" onclick="setTheme('dark')"><i class="bi bi-moon-stars"></i> Escuro</button>
+                </div>
+              </div>
+              <button class="nx-btn nx-btn-primary" id="btn-save-appearance">Salvar Aparência</button>
+            </div>
+
+          </div></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- MODALS                                                    -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+
+  <!-- Lead Modal -->
+  <div class="nx-modal-overlay" id="modal-lead">
+    <div class="nx-modal">
+      <div class="nx-modal-header"><h3 id="lead-modal-title">Novo Lead</h3><button class="nx-modal-close" data-close><i class="bi bi-x-lg"></i></button></div>
+      <div class="nx-modal-body">
+        <form id="lead-form">
+          <input type="hidden" id="lead-id">
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Nome <span class="required">*</span></label><input type="text" class="nx-input" name="name" required></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Telefone <span class="required">*</span></label><input type="tel" class="nx-input" name="phone" required placeholder="(00) 00000-0000"></div>
+          </div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">WhatsApp</label><input type="tel" class="nx-input" name="whatsapp"></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">E-mail</label><input type="email" class="nx-input" name="email"></div>
+          </div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">CPF</label><input type="text" class="nx-input" name="cpf" placeholder="000.000.000-00"></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Cidade</label><input type="text" class="nx-input" name="city"></div>
+          </div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Interesse</label><select class="nx-select" name="interest_type"><option value="">Selecione</option><option value="compra">Compra</option><option value="venda">Venda</option><option value="aluguel">Aluguel</option><option value="troca">Troca</option></select></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Origem</label><select class="nx-select" name="source"><option value="">Selecione</option><option value="site">Site</option><option value="facebook">Facebook</option><option value="instagram">Instagram</option><option value="indicacao">Indicação</option><option value="whatsapp">WhatsApp</option><option value="portal">Portal</option><option value="outro">Outro</option></select></div>
+          </div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Orçamento Mín</label><input type="number" class="nx-input" name="budget_min" placeholder="R$"></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Orçamento Máx</label><input type="number" class="nx-input" name="budget_max" placeholder="R$"></div>
+          </div>
+          <div class="nx-form-group"><label class="nx-form-label">Observações</label><textarea class="nx-textarea" name="notes" rows="3"></textarea></div>
+        </form>
+      </div>
+      <div class="nx-modal-footer"><button class="nx-btn nx-btn-secondary" data-close>Cancelar</button><button class="nx-btn nx-btn-primary" id="save-lead-btn">Salvar Lead</button></div>
+    </div>
+  </div>
+
+  <!-- Client Modal -->
+  <div class="nx-modal-overlay" id="modal-client">
+    <div class="nx-modal" style="max-width:680px;">
+      <div class="nx-modal-header"><h3 id="client-modal-title">Novo Cliente</h3><button class="nx-modal-close" data-close><i class="bi bi-x-lg"></i></button></div>
+      <div class="nx-modal-body">
+        <form id="client-form">
+          <input type="hidden" id="client-id">
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Nome <span class="required">*</span></label><input type="text" class="nx-input" name="name" required></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Telefone <span class="required">*</span></label><input type="tel" class="nx-input" name="phone" required></div>
+          </div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">WhatsApp</label><input type="tel" class="nx-input" name="whatsapp"></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">E-mail</label><input type="email" class="nx-input" name="email"></div>
+          </div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">CPF</label><input type="text" class="nx-input" name="cpf" placeholder="000.000.000-00"></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">RG</label><input type="text" class="nx-input" name="rg"></div>
+          </div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Data de Nascimento</label><input type="date" class="nx-input" name="birth_date"></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Profissão</label><input type="text" class="nx-input" name="profession"></div>
+          </div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Renda Mensal (R$)</label><input type="number" class="nx-input" name="income"></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">CEP</label><input type="text" class="nx-input" name="cep" placeholder="00000-000"></div>
+          </div>
+          <div class="nx-form-group" style="margin-bottom:12px;"><label class="nx-form-label">Endereço</label><input type="text" class="nx-input" name="address"></div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Cidade</label><input type="text" class="nx-input" name="city"></div>
+            <div class="nx-form-group" style="width:80px;"><label class="nx-form-label">Estado</label><input type="text" class="nx-input" name="state" maxlength="2" placeholder="UF"></div>
+          </div>
+          <div class="nx-form-group"><label class="nx-form-label">Observações</label><textarea class="nx-textarea" name="notes" rows="2"></textarea></div>
+        </form>
+      </div>
+      <div class="nx-modal-footer"><button class="nx-btn nx-btn-secondary" data-close>Cancelar</button><button class="nx-btn nx-btn-primary" id="save-client-btn">Salvar Cliente</button></div>
+    </div>
+  </div>
+
+  <!-- Property Modal -->
+  <div class="nx-modal-overlay" id="modal-property">
+    <div class="nx-modal" style="max-width:720px;">
+      <div class="nx-modal-header"><h3 id="property-modal-title">Novo Imóvel</h3><button class="nx-modal-close" data-close><i class="bi bi-x-lg"></i></button></div>
+      <div class="nx-modal-body">
+        <form id="property-form">
+          <input type="hidden" id="property-id">
+          <div class="nx-form-group" style="margin-bottom:12px;"><label class="nx-form-label">Título <span class="required">*</span></label><input type="text" class="nx-input" name="title" required placeholder="Ex: Apartamento 3 quartos no Centro"></div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Tipo</label><select class="nx-select" name="type"><option value="apartment">Apartamento</option><option value="house">Casa</option><option value="commercial">Comercial</option><option value="land">Terreno</option><option value="warehouse">Galpão</option></select></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Transação</label><select class="nx-select" name="transaction_type"><option value="sale">Venda</option><option value="rent">Aluguel</option><option value="both">Venda/Aluguel</option></select></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Preço (R$) <span class="required">*</span></label><input type="number" class="nx-input" name="price" required></div>
+          </div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Endereço</label><input type="text" class="nx-input" name="address"></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Bairro</label><input type="text" class="nx-input" name="neighborhood"></div>
+          </div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Cidade</label><input type="text" class="nx-input" name="city"></div>
+            <div class="nx-form-group" style="width:80px;"><label class="nx-form-label">Estado</label><input type="text" class="nx-input" name="state" maxlength="2" placeholder="UF"></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">CEP</label><input type="text" class="nx-input" name="cep"></div>
+          </div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Área Útil (m²)</label><input type="number" class="nx-input" name="area_util"></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Área Total (m²)</label><input type="number" class="nx-input" name="area_total"></div>
+          </div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Quartos</label><input type="number" class="nx-input" name="bedrooms" min="0"></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Banheiros</label><input type="number" class="nx-input" name="bathrooms" min="0"></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Suítes</label><input type="number" class="nx-input" name="suites" min="0"></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Vagas</label><input type="number" class="nx-input" name="parking_spots" min="0"></div>
+          </div>
+          <div class="nx-form-group" style="margin-bottom:12px;"><label class="nx-form-label">Descrição</label><textarea class="nx-textarea" name="description" rows="2"></textarea></div>
+          <div class="nx-form-group"><label class="nx-form-label">Observações internas</label><textarea class="nx-textarea" name="notes" rows="2"></textarea></div>
+        </form>
+      </div>
+      <div class="nx-modal-footer"><button class="nx-btn nx-btn-secondary" data-close>Cancelar</button><button class="nx-btn nx-btn-primary" id="save-property-btn">Salvar Imóvel</button></div>
+    </div>
+  </div>
+
+  <!-- Task Modal -->
+  <div class="nx-modal-overlay" id="modal-task">
+    <div class="nx-modal" style="max-width:520px;">
+      <div class="nx-modal-header"><h3 id="task-modal-title">Nova Tarefa</h3><button class="nx-modal-close" data-close><i class="bi bi-x-lg"></i></button></div>
+      <div class="nx-modal-body">
+        <form id="task-form">
+          <input type="hidden" id="task-id">
+          <div class="nx-form-group" style="margin-bottom:12px;"><label class="nx-form-label">Título <span class="required">*</span></label><input type="text" class="nx-input" name="title" required></div>
+          <div class="nx-form-group" style="margin-bottom:12px;"><label class="nx-form-label">Descrição</label><textarea class="nx-textarea" name="description" rows="2"></textarea></div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Tipo</label><select class="nx-select" name="type"><option value="task">Tarefa</option><option value="call">Ligação</option><option value="visit">Visita</option><option value="follow_up">Follow-up</option></select></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Prioridade</label><select class="nx-select" name="priority"><option value="low">Normal</option><option value="high">Alta</option><option value="urgent">Urgente</option></select></div>
+          </div>
+          <div class="nx-form-group"><label class="nx-form-label">Prazo</label><input type="datetime-local" class="nx-input" name="due_date"></div>
+        </form>
+      </div>
+      <div class="nx-modal-footer"><button class="nx-btn nx-btn-secondary" data-close>Cancelar</button><button class="nx-btn nx-btn-primary" id="save-task-btn">Salvar Tarefa</button></div>
+    </div>
+  </div>
+
+  <!-- Event Modal -->
+  <div class="nx-modal-overlay" id="modal-event">
+    <div class="nx-modal" style="max-width:520px;">
+      <div class="nx-modal-header"><h3 id="event-modal-title">Novo Evento</h3><button class="nx-modal-close" data-close><i class="bi bi-x-lg"></i></button></div>
+      <div class="nx-modal-body">
+        <form id="event-form">
+          <input type="hidden" id="event-id">
+          <div class="nx-form-group" style="margin-bottom:12px;"><label class="nx-form-label">Título <span class="required">*</span></label><input type="text" class="nx-input" name="title" required></div>
+          <div class="nx-form-group" style="margin-bottom:12px;"><label class="nx-form-label">Tipo</label><select class="nx-select" name="type"><option value="meeting">Reunião</option><option value="visit">Visita</option><option value="call">Ligação</option><option value="other">Outro</option></select></div>
+          <div class="d-flex gap-3" style="margin-bottom:12px;">
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Início <span class="required">*</span></label><input type="datetime-local" class="nx-input" name="start_at" required></div>
+            <div class="nx-form-group flex-1"><label class="nx-form-label">Fim</label><input type="datetime-local" class="nx-input" name="end_at"></div>
+          </div>
+          <div class="nx-form-group" style="margin-bottom:12px;"><label class="nx-form-label">Local</label><input type="text" class="nx-input" name="location" placeholder="Endereço ou link da reunião"></div>
+          <div class="nx-form-group"><label class="nx-form-label">Descrição</label><textarea class="nx-textarea" name="description" rows="2"></textarea></div>
+        </form>
+      </div>
+      <div class="nx-modal-footer"><button class="nx-btn nx-btn-secondary" data-close>Cancelar</button><button class="nx-btn nx-btn-primary" id="save-event-btn">Salvar Evento</button></div>
+    </div>
+  </div>
+
+  <!-- Admin Company Modal -->
+  <div class="nx-modal-overlay" id="modal-admin-company">
+    <div class="nx-modal" style="max-width:520px;">
+      <div class="nx-modal-header"><h3>Gerenciar Empresa</h3><button class="nx-modal-close" data-close><i class="bi bi-x-lg"></i></button></div>
+      <div class="nx-modal-body">
+        <input type="hidden" id="admin-company-id">
+        <div class="nx-form-group" style="margin-bottom:12px;"><label class="nx-form-label">Nome</label><input type="text" class="nx-input" id="admin-company-name"></div>
+        <div class="d-flex gap-3" style="margin-bottom:12px;">
+          <div class="nx-form-group flex-1"><label class="nx-form-label">Plano</label><select class="nx-select" id="admin-company-plan"><option value="basic">Básico</option><option value="professional">Profissional</option><option value="enterprise">Enterprise</option></select></div>
+          <div class="nx-form-group flex-1"><label class="nx-form-label">Status</label><select class="nx-select" id="admin-company-status"><option value="active">Ativa</option><option value="suspended">Suspensa</option></select></div>
+        </div>
+      </div>
+      <div class="nx-modal-footer"><button class="nx-btn nx-btn-secondary" data-close>Cancelar</button><button class="nx-btn nx-btn-primary" id="save-admin-company-btn">Salvar</button></div>
+    </div>
+  </div>
+
+  <!-- QR Code Modal -->
+  <div class="nx-modal-overlay" id="modal-qr">
+    <div class="nx-modal" style="max-width:360px;text-align:center;">
+      <div class="nx-modal-header" style="justify-content:center;"><h3>Conectar WhatsApp</h3></div>
+      <div class="nx-modal-body">
+        <p style="color:var(--nx-text-secondary);margin-bottom:16px;">Escaneie o QR Code com seu WhatsApp</p>
+        <div id="qr-code-container" style="padding:20px;background:var(--nx-bg);border-radius:var(--nx-radius);margin-bottom:16px;"><div class="nx-skeleton" style="width:200px;height:200px;margin:0 auto;"></div></div>
+        <div id="qr-loading" style="color:var(--nx-text-muted);font-size:0.875rem;"><i class="bi bi-arrow-repeat" style="animation:spin 1s linear infinite;display:inline-block;"></i> Carregando...</div>
+      </div>
+      <div class="nx-modal-footer" style="justify-content:center;"><button class="nx-btn nx-btn-secondary" data-close>Fechar</button></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
