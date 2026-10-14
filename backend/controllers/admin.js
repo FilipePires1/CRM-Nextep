@@ -3,6 +3,7 @@
  * Painel administrativo global
  */
 
+
 exports.getDashboard = async (req, res) => {
   try {
     const supabase = req.supabase;
